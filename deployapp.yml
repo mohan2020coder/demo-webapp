@@ -1,8 +1,8 @@
 ---
 - name: Deploy Docker Image and Container
-  hosts: your_remote_host  # Replace with your actual host or group name from inventory
+  hosts: web  # Replace with your actual host or group name from inventory
   become: yes  # Execute tasks with sudo if needed
-
+  remote_user: adminuser
   tasks:
     - name: Pull Docker Image
       docker_image:
