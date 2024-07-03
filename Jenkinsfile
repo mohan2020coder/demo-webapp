@@ -2,11 +2,21 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'your-dockerhub-username/demo-webapp:latest'
-        SSH_CREDENTIALS_ID = 'your-ssh-credentials-id'
-        REMOTE_SERVER = 'user@remote-server-ip'
-        REMOTE_DEPLOY_PATH = '/path/to/deploy'
+        DOCKER_IMAGE = 'monihub/demo-webapp:latest'
+        SSH_CREDENTIALS_ID = 'SSH_CREDENTIALS_ID'
+        REMOTE_SERVER = 'adminuser@192.168.0.104'
+        REMOTE_DEPLOY_PATH = '/usr/local/tomcat/webapps'
     }
+
+
+     stages {
+        stage('Debug') {
+            steps {
+                sh 'echo "Current directory: ${PWD}"'
+                sh 'ls -la'
+                git url: 'https://github.com/mohan2020coder/demo-webapp.git'
+            }
+        }
 
     stages {
         stage('Checkout') {
