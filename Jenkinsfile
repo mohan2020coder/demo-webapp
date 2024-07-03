@@ -6,6 +6,8 @@ pipeline {
         SSH_CREDENTIALS_ID = 'SSH_CREDENTIALS_ID'
         REMOTE_SERVER = 'adminuser@192.168.0.104'
         REMOTE_DEPLOY_PATH = '/usr/local/tomcat/webapps'
+        JDK_HOME = tool name: 'java', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
     }
 
     stages {
@@ -25,15 +27,17 @@ pipeline {
                 }
             }
         }
-
         stage('Build') {
             steps {
                 script {
-                    // Clean and build your Maven or Gradle project
-                    sh 'mvn clean package'  // Or 'gradle clean build'
+                    // Ensure JDK is configured correctly
+                    sh "${JDK_HOME}/bin/java -version"
 
-                    // Ensure the WAR file exists in the target directory
-                    archiveArtifacts artifacts: 'target/demo-webapp-1.0-SNAPSHOT.war', allowEmptyArchive: true
+                    // Ensure Maven is configured correctly
+                    sh "${MAVEN_HOME}/bin/mvn -version"
+
+                    // Run Maven build
+                    sh "${MAVEN_HOME}/bin/mvn clean package"
                 }
             }
         }
