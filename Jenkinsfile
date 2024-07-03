@@ -26,28 +26,18 @@ pipeline {
             }
         }
 
-
-        stage('Build Docker Image') {
-           steps {
-               script {
-                   sh 'docker build -t monihub/demo-webapp .'
-               }
-           }
-       }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh '''
-                            echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
-                            docker push monihub/demo-webapp
-                        '''
+        stages {
+                stage('Build Docker Image') {
+                    steps {
+                        script {
+                            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                                def customImage = docker.build('monihub/demo-webapp:latest', '.')
+                                customImage.push()
+                            }
+                        }
                     }
                 }
             }
-        }
-
 
         stage('Deploy') {
             steps {
