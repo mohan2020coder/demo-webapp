@@ -20,7 +20,8 @@ pipeline {
             steps {
                 script {
                     // Checking out the Git repository
-                    git 'https://github.com/mohan2020coder/demo-webapp.git'
+                    git branch: 'main', url: 'https://github.com/mohan2020coder/demo-webapp.git'
+                    //git 'https://github.com/mohan2020coder/demo-webapp.git'
                 }
             }
         }
