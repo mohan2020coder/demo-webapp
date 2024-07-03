@@ -75,7 +75,7 @@ pipeline {
                         docker pull ${DOCKER_IMAGE}
                         docker stop demo-webapp || true
                         docker rm demo-webapp || true
-                        docker run -d -p 8080:8080 --name demo-webapp ${DOCKER_IMAGE}
+                        docker run -d -p 8081:8080 --name demo-webapp ${DOCKER_IMAGE}
                         EOF
                         """
                     }
