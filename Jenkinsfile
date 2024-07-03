@@ -8,26 +8,27 @@ pipeline {
         REMOTE_DEPLOY_PATH = '/usr/local/tomcat/webapps'
     }
 
-
-     stages {
+    stages {
         stage('Debug') {
             steps {
                 sh 'echo "Current directory: ${PWD}"'
                 sh 'ls -la'
-                git url: 'https://github.com/mohan2020coder/demo-webapp.git'
             }
         }
 
-    stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/mohan2020coder/demo-webapp.git'
+                script {
+                    // Checking out the Git repository
+                    git 'https://github.com/mohan2020coder/demo-webapp.git'
+                }
             }
         }
 
         stage('Build') {
             steps {
                 script {
+                    // Building the Docker image
                     docker.build(DOCKER_IMAGE)
                 }
             }
@@ -36,6 +37,7 @@ pipeline {
         stage('Push') {
             steps {
                 script {
+                    // Pushing the Docker image to DockerHub
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
                         docker.image(DOCKER_IMAGE).push()
                     }
@@ -45,15 +47,18 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sshagent([SSH_CREDENTIALS_ID]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} << EOF
-                    docker pull ${DOCKER_IMAGE}
-                    docker stop demo-webapp || true
-                    docker rm demo-webapp || true
-                    docker run -d -p 8080:8080 --name demo-webapp ${DOCKER_IMAGE}
-                    EOF
-                    """
+                script {
+                    // Deploying to remote server via SSH
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} << EOF
+                        docker pull ${DOCKER_IMAGE}
+                        docker stop demo-webapp || true
+                        docker rm demo-webapp || true
+                        docker run -d -p 8080:8080 --name demo-webapp ${DOCKER_IMAGE}
+                        EOF
+                        """
+                    }
                 }
             }
         }
