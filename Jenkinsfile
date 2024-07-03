@@ -66,25 +66,14 @@ pipeline {
         }
 
 
-       stage('Deploy') {
-        steps {
-            withCredentials([sshUserPrivateKey(credentialsId: 'SSH_CREDENTIALS_ID', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
+      stage('Deploy') {
+            steps {
                 script {
-                    // Deploying to remote server via SSH
-                    sshagent([credentials: ['SSH_CREDENTIALS_ID']]) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no -i ${SSH_PRIVATE_KEY} ${REMOTE_SERVER} << EOF
-                        docker pull ${DOCKER_IMAGE}
-                        docker stop demo-webapp || true
-                        docker rm demo-webapp || true
-                        docker run -d -p 8081:8080 --name demo-webapp ${DOCKER_IMAGE}
-                        EOF
-                        """
-                    }
+                    // Run Ansible playbook
+                    sh "ansible-playbook -i hosts deployapp.yml"
                 }
             }
         }
-    }
 
     }
 

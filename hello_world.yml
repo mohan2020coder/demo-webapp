@@ -1,0 +1,7 @@
+---
+- name: Hello World Example
+  hosts: web
+  remote_user: adminuser
+  tasks:
+    - name: Print Hello World
+      ansible.builtin.shell: echo "Hello, World!"

@@ -1,0 +1,25 @@
+---
+- name: Deploy Docker Image and Container
+  hosts: your_remote_host  # Replace with your actual host or group name from inventory
+  become: yes  # Execute tasks with sudo if needed
+
+  tasks:
+    - name: Pull Docker Image
+      docker_image:
+        name: "{{ DOCKER_IMAGE }}"
+        state: present
+
+    - name: Stop and Remove Existing Container
+      docker_container:
+        name: demo-webapp
+        state: stopped
+        force_kill: yes
+      ignore_errors: yes  # Ignore errors if the container doesn't exist
+
+    - name: Run Docker Container
+      docker_container:
+        name: demo-webapp
+        image: "{{ DOCKER_IMAGE }}"
+        ports:
+          - "8081:8080"
+        state: started
