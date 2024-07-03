@@ -65,13 +65,14 @@ pipeline {
         }
 
 
-        stage('Deploy') {
-            steps {
+       stage('Deploy') {
+        steps {
+            withCredentials([sshUserPrivateKey(credentialsId: 'SSH_CREDENTIALS_ID', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
                 script {
                     // Deploying to remote server via SSH
-                    sshagent([SSH_CREDENTIALS_ID]) {
+                    sshagent([credentials: ['SSH_CREDENTIALS_ID']]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no ${REMOTE_SERVER} << EOF
+                        ssh -o StrictHostKeyChecking=no -i ${SSH_PRIVATE_KEY} ${REMOTE_SERVER} << EOF
                         docker pull ${DOCKER_IMAGE}
                         docker stop demo-webapp || true
                         docker rm demo-webapp || true
@@ -82,6 +83,8 @@ pipeline {
                 }
             }
         }
+    }
+
     }
 
     post {
