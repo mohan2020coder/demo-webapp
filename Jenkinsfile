@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'monihub/demo-webapp:latest'
         SSH_CREDENTIALS_ID = 'SSH_CREDENTIALS_ID'
+        SSH_PRIVATE_KEY = credentials('SSH_CREDENTIALS_ID')
         REMOTE_SERVER = 'adminuser@192.168.0.104'
         REMOTE_DEPLOY_PATH = '/usr/local/tomcat/webapps'
         JDK_HOME = tool name: 'java', type: 'jdk'
