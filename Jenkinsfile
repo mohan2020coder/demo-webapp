@@ -26,6 +26,18 @@ pipeline {
             }
         }
 
+        stage('Build') {
+            steps {
+                script {
+                    // Clean and build your Maven or Gradle project
+                    sh 'mvn clean package'  // Or 'gradle clean build'
+
+                    // Ensure the WAR file exists in the target directory
+                    archiveArtifacts artifacts: 'target/demo-webapp-1.0-SNAPSHOT.war', allowEmptyArchive: true
+                }
+            }
+        }
+
 
         stage('Build Docker Image') {
            steps {
