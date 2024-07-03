@@ -26,20 +26,20 @@ pipeline {
             }
         }
 
-        stages {
-                stage('Build Docker Image') {
-                    steps {
-                        script {
-                            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
-                                def customImage = docker.build('monihub/demo-webapp:latest', '.')
-                                customImage.push()
-                            }
+   
+            stage('Build Docker Image') {
+                steps {
+                    script {
+                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+                            def customImage = docker.build('monihub/demo-webapp:latest', '.')
+                            customImage.push()
                         }
                     }
                 }
             }
+        
 
-        stage('Deploy') {
+        stage('Deploy to Server') {
             steps {
                 script {
                     // Deploying to remote server via SSH
