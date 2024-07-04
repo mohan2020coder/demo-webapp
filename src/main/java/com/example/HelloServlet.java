@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/todo")
-public class TodoServlet extends HttpServlet {
+public class HelloServlet extends HttpServlet {
     // Simulate a simple in-memory task list
     private List<String> tasks = new ArrayList<>();
 
