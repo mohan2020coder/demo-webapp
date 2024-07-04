@@ -68,9 +68,11 @@ pipeline {
 
       stage('Deploy') {
             steps {
-                script {
-                    // Run Ansible playbook
-                    sh "ansible-playbook -i hosts deployapp.yml"
+                
+         script {
+                    withCredentials([string(credentialsId: 'SUDO_PASS_ID', variable: 'SUDO_PASSWORD')]) {
+                        sh 'ansible-playbook -i hosts deployapp.yml --extra-vars "ansible_become_pass=$SUDO_PASSWORD"'
+                    }
                 }
             }
         }
