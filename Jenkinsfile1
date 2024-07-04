@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Clone the repository containing the Ansible playbook
+                git branch: 'main', url: 'https://github.com/mohan2020coder/demo-webapp.git'
+            }
+        }
+
+        
+
+        stage('Run Ansible Playbook') {
+            steps {
+                // Run the Ansible playbook
+                sh 'ansible-playbook -i hosts hello_world.yml'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up
+            cleanWs()
+        }
+    }
+}
