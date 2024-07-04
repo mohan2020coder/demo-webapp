@@ -2,6 +2,7 @@
 - name: Hello World Example
   hosts: web
   become: yes
+  become_method: sudo 
   vars_files:
     - ~/.ansible_vault
   tasks:
