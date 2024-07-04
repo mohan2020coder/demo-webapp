@@ -4,7 +4,7 @@
   become: yes  # Execute tasks with sudo if needed
   become_method: sudo 
   vars:
-    DOCKER_IMAGE: "your-docker-image:latest"  # Define your Docker image here
+    DOCKER_IMAGE: "monihub/demo-webapp:latest"  # Define your Docker image here
   tasks:
     - name: Pull Docker Image
       docker_image:
