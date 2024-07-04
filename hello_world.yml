@@ -1,7 +1,9 @@
 ---
 - name: Hello World Example
   hosts: web
-  remote_user: adminuser
+  become: yes
+  vars_files:
+    - ~/.ansible_vault
   tasks:
     - name: Print Hello World
       ansible.builtin.shell: echo "Hello, World!"
