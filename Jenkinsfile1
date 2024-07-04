@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+      environment {
+        VAULT_PASSWORD = credentials('VAULT_PASSWORD')  // Assuming you have stored your vault password in Jenkins credentials
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,10 +23,20 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                // Run the Ansible playbook
-                sh 'ansible-playbook -i hosts hello_world.yml'
+                // Create a temporary file with the Vault password
+                script {
+                    writeFile file: '/tmp/vault_pass', text: "${env.VAULT_PASSWORD}"
+                }
+
+                // Run the Ansible playbook with the vault password file
+                sh 'ansible-playbook -i hosts hello_world.yml --vault-password-file /tmp/vault_pass'
+
+                // Remove the temporary Vault password file
+                sh 'rm -f /tmp/vault_pass'
             }
         }
+
+        
     }
 
     post {
