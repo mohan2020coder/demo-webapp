@@ -3,6 +3,8 @@
   hosts: web  # Replace with your actual host or group name from inventory
   become: yes  # Execute tasks with sudo if needed
   become_method: sudo 
+  vars:
+    DOCKER_IMAGE: "monihub/demo-webapp:latest"  # Define your Docker image here
   tasks:
     - name: Pull Docker Image
       docker_image:
@@ -23,3 +25,4 @@
         ports:
           - "8081:8080"
         state: started
+

@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'monihub/demo-webapp:latest'
+        DOCKER_IMAGE = 'monihub/demo-webapp'
         SSH_CREDENTIALS_ID = 'SSH_CREDENTIALS_ID'
         SSH_PRIVATE_KEY = credentials('SSH_CREDENTIALS_ID')
         REMOTE_SERVER = 'adminuser@192.168.0.104'
