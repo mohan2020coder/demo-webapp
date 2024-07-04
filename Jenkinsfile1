@@ -12,14 +12,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/mohan2020coder/demo-webapp.git'
             }
         }
-        
     
-        
-        stage('sudo demo Container') {
+        stage('Anible demo ') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'SUDO_PASS_ID', variable: 'SUDO_PASSWORD')]) {
-                        sh 'ansible-playbook hosts hello_world.yml --extra-vars "ansible_become_pass=$SUDO_PASSWORD"'
+                        sh 'ansible-playbook -i hosts hello_world.yml --extra-vars "ansible_become_pass=$SUDO_PASSWORD"'
                     }
                 }
             }
