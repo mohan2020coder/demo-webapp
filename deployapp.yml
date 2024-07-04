@@ -2,7 +2,7 @@
 - name: Deploy Docker Image and Container
   hosts: web  # Replace with your actual host or group name from inventory
   become: yes  # Execute tasks with sudo if needed
-  remote_user: adminuser
+  become_method: sudo 
   tasks:
     - name: Pull Docker Image
       docker_image:
