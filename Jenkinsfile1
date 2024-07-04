@@ -12,15 +12,8 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/mohan2020coder/demo-webapp.git'
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                // Install necessary packages
-                sh 'sudo yum update'
-               
-            }
-        }
         
-
+    
         stage('Run Ansible Playbook') {
             steps {
                 // Create a temporary file with the Vault password
