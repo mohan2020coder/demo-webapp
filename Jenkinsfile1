@@ -11,7 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install necessary packages
-                sh 'sudo apt-get update'
+                sh 'sudo yum update'
                
             }
         }
