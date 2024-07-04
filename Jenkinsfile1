@@ -14,20 +14,17 @@ pipeline {
         }
         
     
-        stage('Run Ansible Playbook') {
+        
+        stage('sudo demo Container') {
             steps {
-                // Create a temporary file with the Vault password
                 script {
-                    writeFile file: '/tmp/vault_pass', text: "${env.VAULT_PASSWORD}"
+                    withCredentials([string(credentialsId: 'SUDO_PASS_ID', variable: 'SUDO_PASSWORD')]) {
+                        sh 'ansible-playbook hosts hello_world.yml --extra-vars "ansible_become_pass=$SUDO_PASSWORD"'
+                    }
                 }
-
-                // Run the Ansible playbook with the vault password file
-                sh 'ansible-playbook -i hosts hello_world.yml --vault-password-file /tmp/vault_pass'
-
-                // Remove the temporary Vault password file
-                sh 'rm -f /tmp/vault_pass'
             }
         }
+
 
         
     }
