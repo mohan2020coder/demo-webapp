@@ -5,8 +5,14 @@
   vars_files:
     - ~/.ansible_vault
   tasks:
+    - name: Update Yum Packages
+      ansible.builtin.yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+
     - name: Print Hello World
       ansible.builtin.shell: echo "Hello, World!"
 
-    - name: pring all hosts
-      ping:
+    - name: Ping all hosts
+      ansible.builtin.ping:
