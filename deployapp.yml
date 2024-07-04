@@ -4,11 +4,12 @@
   become: yes  # Execute tasks with sudo if needed
   become_method: sudo 
   vars:
-    DOCKER_IMAGE: "monihub/demo-webapp:latest"  # Define your Docker image here
+    DOCKER_IMAGE: "your-docker-image:latest"  # Define your Docker image here
   tasks:
     - name: Pull Docker Image
       docker_image:
         name: "{{ DOCKER_IMAGE }}"
+        source: pull  # Explicitly specify the source as 'pull'
         state: present
 
     - name: Stop and Remove Existing Container
@@ -25,4 +26,3 @@
         ports:
           - "8081:8080"
         state: started
-
